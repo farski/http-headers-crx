@@ -1,0 +1,100 @@
+table {
+  border: 0;
+  border-collapse: collapse;
+  border-spacing: 0;
+  margin: 0 0 1px 0;
+  max-width: 100%;
+  table-layout: fixed;
+  width: 100%;
+}
+
+caption {
+  max-width: 590px;
+  overflow: hidden;
+  padding: 5px;
+  text-align: left;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+  table.request caption {
+    background: #373737;
+    color: white;
+    margin-bottom: 1px;
+  }
+  table.response caption {
+    font-size: 10px;
+    font-weight: bold;
+    text-transform: uppercase;
+  }
+
+thead {
+  display: none;
+}
+
+thead tr {
+
+}
+
+thead th {
+  font-size: 10px;
+  font-weight: bold;
+  text-transform: uppercase;
+}
+  thead th:first-child {
+    max-width: 200px;
+    padding-right: 17px;
+    text-align: right;
+  }
+  thead th:last-child {
+    text-align: left;
+  }
+
+tfoot {
+
+}
+
+tfoot tr {
+
+}
+
+tfoot td {
+
+}
+
+tbody {
+
+}
+
+tbody tr {
+
+}
+  tbody tr:hover {
+    background: #f1f1f1;
+  }
+
+tbody td {
+  border: 0;
+  font-size: 11px;
+  margin: 0;
+  cursor: pointer;
+  padding: 3px 0;
+}
+  tbody td:first-child {
+    overflow: hidden;
+    padding-right: 17px;
+    text-align: right;
+    text-overflow: ellipsis;
+    text-transform: capitalize;
+    vertical-align: top;
+    white-space: nowrap;
+    width: 200px;
+  }
+  tbody td:last-child {
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+  tbody td:last-child:hover {
+    overflow: auto;
+    white-space: normal;
+  }
