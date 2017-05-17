@@ -20,5 +20,5 @@
    "manifest_version": 2,
    "name": "HTTP Headers",
    "permissions": [ "tabs", "http://*/*", "https://*/*", "webRequest" ],
-   "version": "0.0.1"
+   "version": "1.0.0"
 }
