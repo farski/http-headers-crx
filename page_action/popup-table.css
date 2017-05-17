@@ -26,6 +26,16 @@ caption {
     font-weight: bold;
     text-transform: uppercase;
   }
+  table.response caption[class^='status-code-2'] {
+    border-left: 5px solid rgb(34, 140, 36);
+  }
+  table.response caption[class^='status-code-3'] {
+    border-left: 5px solid rgb(29, 154, 207);
+  }
+  table.response caption[class^='status-code-4'],
+  table.response caption[class^='status-code-5'] {
+    border-left: 5px solid rgb(162, 43, 50);
+  }
 
 thead {
   display: none;
