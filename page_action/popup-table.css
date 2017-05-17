@@ -76,7 +76,7 @@ tbody {
 }
 
 tbody tr {
-
+  transition: background .075s ease-in-out;
 }
   tbody tr:hover {
     background: #f1f1f1;
@@ -86,7 +86,7 @@ tbody td {
   border: 0;
   font-size: 11px;
   margin: 0;
-  cursor: pointer;
+  cursor: copy;
   padding: 3px 0;
 }
   tbody td:first-child {

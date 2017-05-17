@@ -52,3 +52,7 @@ body {
     /*background: rgb(240, 207, 207);*/
     border-left: 15px solid rgb(162, 43, 50);
   }
+
+.copy-hightlight {
+  background: rgb(182, 219, 193) !important;
+}

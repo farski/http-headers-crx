@@ -185,7 +185,9 @@ const HEADER_DESCRIPTIONS = {
   'x-frame-options': 'Indicates whether or not a browser should be allowed to render a page in a <frame>, <iframe> or <object>'
 }
 
-function copyToClipboard(domEl, text) {
+function copyToClipboard(domEl, rowEl, text) {
+  rowEl.classList.add('copy-hightlight');
+
   const textArea = document.createElement('textarea');
   textArea.value = text;
   textArea.className = 'copy-buffer';
@@ -196,6 +198,8 @@ function copyToClipboard(domEl, text) {
   document.execCommand('copy');
 
   domEl.removeChild(textArea);
+
+  setTimeout(() => rowEl.classList.remove('copy-hightlight'), 500);
 }
 
 function titleForHeader(name) {
@@ -260,7 +264,7 @@ function buildTable(details, domEl) {
     elTbody.appendChild(elTbodyTr);
 
     elTbodyTr.addEventListener(CLICK, event => {
-      copyToClipboard(domEl, `${name}: ${headers[name]}`);
+      copyToClipboard(domEl, elTbodyTr, `${name}: ${headers[name]}`);
     });
   }
   elTable.appendChild(elTbody);
