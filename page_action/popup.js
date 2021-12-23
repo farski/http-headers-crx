@@ -270,18 +270,23 @@ function buildTable(details, domEl) {
   elTable.appendChild(elTbody);
 }
 
-function onContentLoaded() {
-  chrome.tabs.getSelected(tab => {
-    const details = chrome.extension.getBackgroundPage()._store[tab.id];
-    const elTables = document.getElementById('tables');
+async function onContentLoaded() {
+  const tabs = await chrome.tabs.query({ currentWindow: true, active: true });
+  const tab = tabs[0];
 
-    const elStatusCode = document.getElementById('status-code');
-    const statusCode = details[details.length - 1].statusCode;
-    elStatusCode.className = `status-code-${statusCode}`;
-    const text = `${statusCode} – ${HTTP_STATUS_CODES[statusCode]}`;
-    const textNode = document.createTextNode(text);
-    elStatusCode.appendChild(textNode);
+  const result = await chrome.storage.local.get([`${tab.id}`]);
+  const json = result[`${tab.id}`];
+  const records = JSON.parse(json);
+  console.log(records);
 
-    for (let d of details) { buildTable(d, elTables); }
-  });
+  const elTables = document.getElementById('tables');
+
+  const elStatusCode = document.getElementById('status-code');
+  const statusCode = records[records.length - 1].statusCode;
+  elStatusCode.className = `status-code-${statusCode}`;
+  const text = `${statusCode} – ${HTTP_STATUS_CODES[statusCode]}`;
+  const textNode = document.createTextNode(text);
+  elStatusCode.appendChild(textNode);
+
+  for (let d of records) { buildTable(d, elTables); }
 }

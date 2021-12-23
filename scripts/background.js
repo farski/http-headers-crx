@@ -42,37 +42,49 @@ function txCallback(details) {
 
 function updateBadge(tabId) {
   const details = _store[tabId];
-  const lastDetails = details[details.length - 1];
+  if (details && details.length) {
+    const lastDetails = details[details.length - 1];
 
-  let color = '#3B3B3B';
+    let color = '#3B3B3B';
 
-  if (lastDetails.statusCode >= 500) {
-    color = '#BA0000';
-  } else if (lastDetails.statusCode >= 400) {
-    color = '#DE5500';
-  } else if (lastDetails.statusCode >= 300) {
-    color = '#0062A3';
-  } else if (lastDetails.statusCode >= 200) {
-    color = '#078F00';
+    if (lastDetails.statusCode >= 500) {
+      color = '#BA0000';
+    } else if (lastDetails.statusCode >= 400) {
+      color = '#DE5500';
+    } else if (lastDetails.statusCode >= 300) {
+      color = '#0062A3';
+    } else if (lastDetails.statusCode >= 200) {
+      color = '#078F00';
+    }
+
+    let text = '•';
+    if (lastDetails.statusCode) { text = `${lastDetails.statusCode}` }
+
+    // If there's more than two details, it means a single request and response
+    // wasn't enough; probably a redirect. Indicate how many total roundtrips were
+    // needed
+    if (details.length > 2) {
+      text = `× ${Math.round(details.length / 2)}`;
+    }
+
+    chrome.action.setBadgeBackgroundColor({color: color, tabId: tabId});
+    chrome.action.setBadgeText({text: text, tabId: tabId});
   }
+}
 
-  let text = '•';
-  if (lastDetails.statusCode) { text = `${lastDetails.statusCode}` }
+async function doneCallback(details) {
+  await chrome.storage.local.set({ [`${details.tabId}`] : JSON.stringify(_store[details.tabId]) });
+}
 
-  // If there's more than two details, it means a single request and response
-  // wasn't enough; probably a redirect. Indicate how many total roundtrips were
-  // needed
-  if (details.length > 2) {
-    text = `× ${Math.round(details.length / 2)}`;
-  }
-
-  chrome.browserAction.setBadgeBackgroundColor({color: color, tabId: tabId});
-  chrome.browserAction.setBadgeText({text: text, tabId: tabId});
+async function cleanup(tabId) {
+  delete(_store[tabId]);
+  await chrome.storage.local.remove([`${tabId}`]);
 }
 
 chrome.webRequest.onHeadersReceived.addListener(rxCallback, filter, rxExtra);
 chrome.webRequest.onSendHeaders.addListener(txCallback, filter, txExtra);
+chrome.webRequest.onCompleted.addListener(doneCallback, filter);
 
-chrome.tabs.onUpdated.addListener(tabId => updateBadge(tabId));
+chrome.tabs.onUpdated.addListener(updateBadge);
 chrome.tabs.onActivated.addListener(info => updateBadge(info.tabId));
-chrome.tabs.onRemoved.addListener(tabId => delete(_store[tabId]));
+chrome.tabs.onRemoved.addListener(cleanup);
